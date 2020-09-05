@@ -64,13 +64,17 @@ maze = []
 for i in range(maze_y):
     row = []
     for j in range(maze_x):
-        row.append((False, ALL_WALLS, random_suit()))
+        row.append((False, ALL_WALLS, ' '))
     maze.append(row)
 
+# Add exit point
+maze[maze_y-1][maze_x-1] = (False, ALL_WALLS & ~Direction.E, ' ')
+
+# Generate the maze
 dfs_maze(maze, 0, 0)
 
 # Print the first row
-print(maze_box_char(NO_WALLS, Direction.S, Direction.E), end='')
+print(maze_box_char(NO_WALLS, Direction.S, NO_WALLS), end='')
 for x in range(maze_x):
     print(maze_box_char(Direction.S, Direction.S, NO_WALLS), end='')
     print(maze_box_char(Direction.S, NO_WALLS if x+1 == maze_x else Direction.S,
@@ -80,13 +84,14 @@ print()
 # Print the rest of the maze. Sorry this is utterly unreadable but I'm on a
 # tight deadline here.
 for y in range(maze_y):
-    print(maze_box_char(Direction.E, NO_WALLS, Direction.E), end='')
+    start_wall = NO_WALLS if y == 0 else Direction.E
+    print(maze_box_char(start_wall, NO_WALLS, start_wall), end='')
     for x in range(maze_x):
         print(maze[y][x][2], end='')
         right_wall = maze[y][x][1] & Direction.E
         print(maze_box_char(right_wall, NO_WALLS, right_wall), end='')
     print()
-    print(maze_box_char(Direction.E, maze[y][0][1],
+    print(maze_box_char(start_wall, maze[y][0][1],
             NO_WALLS if y+1 == maze_y else Direction.E), end='')
     for x in range(maze_x):
         bottom_wall = maze[y][x][1] & Direction.S
