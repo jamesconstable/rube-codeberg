@@ -27,6 +27,9 @@ def is_wall(x, y, maze):
     return maze[y][x] != ' '
 
 def is_end(cell, maze):
+    # Checks if cell is bottom-
+    # right-most cell (i.e. the
+    # end!)
     x, y = cell
     max_x = len(maze[0])
     max_y = len(maze)
@@ -34,8 +37,9 @@ def is_end(cell, maze):
             (y+2 == max_y))
 
 def dfs(maze, visit_fn):
-    max_x = len(maze[0])
-    max_y = len(maze)
+    # Run a DFS over the maze,
+    # starting in the top-left
+    # cell.
     fringe = [(1, 1)]
     seen = set()
     while len(fringe) > 0:
@@ -52,13 +56,20 @@ def dfs(maze, visit_fn):
             fringe.append(n)
 
 def write_cell(cell, maze):
+    # Add the cell to the buffer
+    # if it's not blank.
     x, y = cell
     if maze[y][x] not in ' █':
         message.append(maze[y][x])
 
 def neighbours(cell, maze):
     # Neighbours are expanded in a
-    # clockwise fashion.
+    # clockwise fashion. We don't
+    # need to worry about range-
+    # checking the indices as the
+    # maze already contains a one
+    # character safety border on
+    # all sides.
     x, y = cell
     if maze[y-1][x] == ' ':
         yield (x, y-2)
@@ -69,15 +80,21 @@ def neighbours(cell, maze):
     if maze[y][x-1] == ' ':
         yield (x-2, y)
 
+# Read in program source code
 f = open('rube_codeberg.py', 'r')
 maze = f.readlines()
 f.close()
 
+# Extract maze
 for i, line in enumerate(maze):
     maze[i] = line.split('#')[-1]
     maze[i] = list(maze[i])
 
+# Solve maze
 dfs(maze, write_cell)
+
+# Filter out decorative characters
+# and parse resulting HTML.
 message = (''.join(message)
         .replace('.', ' ')
         .replace('"', '')
