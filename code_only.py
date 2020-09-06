@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import random
 #from bs4 import BeautifulSoup
 
 def is_wall(x, y, maze):
@@ -18,12 +19,18 @@ def dfs(x, y, maze):
             fringe.append(curr)
 
 f = open('rube_codeberg.py', 'r')
-maze = f.readlines()
+maze = f.readlines()[1:]
 f.close()
 
 for i, line in enumerate(maze):
     maze[i] = line.split('#')[-1]
     maze[i] = list(maze[i])
 
-print(maze)
+for y in range(1, len(maze), 2):
+    for x in range(1, len(maze[y]), 2):
+        if maze[y][x] in ' .^"':
+            maze[y][x] = random.choice('abcdefghijklmnpqrstuvwxyz' +
+               'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        print(maze[y])
 
+print(''.join(''.join(m) for m in maze))

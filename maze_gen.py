@@ -23,8 +23,8 @@ def opposite_direction(d):
 
 def random_suit(is_red):
     if is_red:
-        return random.choice(('♥️', '♦️'))
-    return random.choice((' ', ' ', ' ', '♣️', '♠️'))
+        return '█'
+    return random.choice((' ', ' ', ' ', '"', '.', '^'))
 
 def dfs_maze(grid, x, y):
     grid[y][x] = (True, grid[y][x][1], grid[y][x][2])
