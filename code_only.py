@@ -3,6 +3,8 @@
 import random
 from bs4 import BeautifulSoup
 
+message = []
+
 def is_wall(x, y, maze):
     return maze[y][x] != ' '
 
@@ -31,7 +33,6 @@ def dfs(maze, visit_fn):
         for n in ns:
             fringe.append(n)
 
-message = []
 def write_cell(cell, maze):
     x, y = cell
     if maze[y][x] not in ' █':
@@ -57,8 +58,13 @@ for i, line in enumerate(maze):
     maze[i] = list(maze[i])
 
 dfs(maze, write_cell)
-message = ''.join(message)
-print(message.replace('.', ' ')
+message = (''.join(message)
+        .replace('.', ' ')
         .replace('"', '')
         .replace('^', '')
         .rstrip())
+
+soup = BeautifulSoup(message,
+    'html.parser')
+
+print(soup.title.string)
