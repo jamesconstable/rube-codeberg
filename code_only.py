@@ -3,6 +3,24 @@
 import random
 from bs4 import BeautifulSoup
 
+# Hi judges!
+#
+# If you're just looking to skim
+# read, the basic idea here is
+# that the comments in this file
+# encode a maze that contains an
+# HTML document with the
+# competition output in the title.
+# The program loads its own source
+# code, solves the maze using a
+# DFS and stores any non-maze
+# characters it encounters in a
+# buffer. The buffer is then
+# parsed with Beautiful Soup, and
+# the title extracted and printed.
+#
+# Thanks for a great PyConline!
+
 message = []
 
 def is_wall(x, y, maze):
@@ -39,6 +57,8 @@ def write_cell(cell, maze):
         message.append(maze[y][x])
 
 def neighbours(cell, maze):
+    # Neighbours are expanded in a
+    # clockwise fashion.
     x, y = cell
     if maze[y-1][x] == ' ':
         yield (x, y-2)
